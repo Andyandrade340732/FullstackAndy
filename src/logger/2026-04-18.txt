@@ -1,0 +1,3 @@
+[22:27:49] POST /api/v1/auth/register
+[22:29:22] POST /api/v1/auth/login
+[22:38:02] POST /api/v1/auth/register
