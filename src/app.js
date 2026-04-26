@@ -12,7 +12,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(middlewareLogs);
 app.use("/api/v1", apiRouter);
 
 app.use(middlewareRutaNoEncontrada);
