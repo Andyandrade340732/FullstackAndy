@@ -1,6 +1,4 @@
 export const middlewareErrores = (err, req, res, next) => {
-        console.log('err.isJoi', err.isJoi);
-    console.log('err', err);
     if (err) {
         if (err.isJoi) {
             const message = err.details
