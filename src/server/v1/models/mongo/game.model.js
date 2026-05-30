@@ -5,7 +5,9 @@ const gameSchema = new mongoose.Schema({
     descripcion: { type: String, required: true },
     anioLanzamiento: { type: Number },
     categoriaId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
-    creadoPor: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
+    creadoPor: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    imageUrl: { type: String },
+    imagePublicId: { type: String }
 }, { timestamps: true });
 
 gameSchema.set("toJSON", {
