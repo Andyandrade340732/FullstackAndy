@@ -1,0 +1,17 @@
+[21:30:45] POST /api/v1/users/register
+[21:45:17] POST /api/v1/users/register
+[21:46:04] POST /api/v1/users/register
+[21:47:52] POST /api/v1/users/register
+[21:48:07] POST /api/v1/users/register
+[21:48:48] POST /api/v1/users/register
+[21:56:16] POST /api/v1/users/register
+[21:57:51] POST /api/v1/users/login
+[21:58:19] POST /api/v1/users/register
+[21:58:34] POST /api/v1/users/login
+[21:58:58] POST /api/v1/users/login
+[21:59:04] POST /api/v1/users/register
+[21:59:07] POST /api/v1/users/login
+[22:00:46] GET /api/v1/games
+[22:01:36] GET /api/v1/games
+[22:07:13] POST /api/v1/games
+[22:07:37] GET /api/v1/games
