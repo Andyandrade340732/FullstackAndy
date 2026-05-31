@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { eliminarJuegoRedux, actualizarJuegoRedux } from "../redux/features/juegosSlice.js";
 import { eliminarJuegoApi, editarJuegoApi } from "../services/apiServices.js";
 
-const Juego = ({ _id, id, titulo, descripcion, anioLanzamiento }) => {
+const Juego = ({ _id, id, titulo, descripcion, anioLanzamiento, imageUrl }) => {
   const idReal = _id || id;
   const dispatch = useDispatch();
   const [editando, setEditando] = useState(false);
@@ -47,6 +47,7 @@ const Juego = ({ _id, id, titulo, descripcion, anioLanzamiento }) => {
       <h3>{titulo}</h3>
       <p>{descripcion}</p>
       {anioLanzamiento && <p>Año: {anioLanzamiento}</p>}
+      {imageUrl && <img src={imageUrl} alt={titulo} style={{ width: "100px", borderRadius: "4px" }} />}
     </div>
   );
 };
