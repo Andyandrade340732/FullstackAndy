@@ -6,6 +6,7 @@ import Juegos from "./Juegos.jsx";
 import AgregarJuego from "./AgregarJuego.jsx";
 import CambiarPlan from "./CambiarPlan.jsx";
 import Grafica from "./Grafica.jsx";
+import InformeUso from "./InformeUso.jsx";
 
 const Contenido = () => {
   const dispatch = useDispatch();
@@ -24,11 +25,18 @@ const Contenido = () => {
   }, []);
 
   return (
-    <div>
-      <CambiarPlan />
-      <Grafica />
-      <AgregarJuego />
-      <Juegos />
+    <div className="container my-4">
+      <div className="row">
+        <div className="col-md-4">
+          <InformeUso />
+          <CambiarPlan />
+          <Grafica />
+        </div>
+        <div className="col-md-8">
+          <AgregarJuego />
+          <Juegos />
+        </div>
+      </div>
     </div>
   );
 };

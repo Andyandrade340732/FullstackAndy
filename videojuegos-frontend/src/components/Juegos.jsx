@@ -16,17 +16,25 @@ const Juegos = () => {
 
   return (
     <div>
-      <label>Filtrar:</label>
-      <input
-        type="text"
-        value={textoFiltro}
-        onChange={(e) => setTextoFiltro(e.target.value)}
-      />
+      <div className="card mb-3">
+        <div className="card-body">
+          <div className="d-flex align-items-center gap-2">
+            <label className="mb-0">Filtrar:</label>
+            <input
+              className="form-control"
+              style={{ maxWidth: "250px" }}
+              type="text"
+              value={textoFiltro}
+              onChange={(e) => setTextoFiltro(e.target.value)}
+              placeholder="Buscar por título..."
+            />
+          </div>
+        </div>
+      </div>
 
-      {juegosFiltrados?.map((juego) => {
-        console.log("juego", juego);
-        return <Juego key={juego._id || juego.id} {...juego} />;
-      })}
+      {juegosFiltrados?.map((juego) => (
+        <Juego key={juego._id || juego.id} {...juego} />
+      ))}
     </div>
   );
 };

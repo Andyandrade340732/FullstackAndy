@@ -7,7 +7,6 @@ const CambiarPlan = () => {
   const usuario = useSelector((state) => state.authSlice.usuario);
 
   if (!usuario) return null;
-  if (usuario.plan === "premium") return <p>Ya sos premium ✅</p>;
 
   const handleCambiarPlan = async () => {
     try {
@@ -19,9 +18,17 @@ const CambiarPlan = () => {
   };
 
   return (
-    <div>
-      <p>Plan actual: {usuario.plan}</p>
-      <button onClick={handleCambiarPlan}>Cambiar a Premium</button>
+    <div className="card mb-3">
+      <div className="card-body">
+        <h5 className="card-title">Plan actual: <span className="badge bg-dark">{usuario.plan}</span></h5>
+        {usuario.plan === "plus" ? (
+          <button className="btn btn-warning btn-sm" onClick={handleCambiarPlan}>
+            Mejorar a Premium ⭐
+          </button>
+        ) : (
+          <p className="text-success">Ya sos premium ✅</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,54 +1,83 @@
-import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { loginApi } from "../services/apiServices.js";
 import { useDispatch } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { loginApi } from "../services/apiServices.js";
+import { jwtDecode } from "jwt-decode";
 import { loginRedux } from "../redux/features/authSlice.js";
+import { startLoading, stopLoading } from "../redux/features/loadingSlice.js";
+
+const loginSchema = Yup.object({
+  email: Yup.string()
+    .email("El email no es válido")
+    .required("El email es obligatorio"),
+  password: Yup.string()
+    .min(3, "La contraseña debe tener al menos 3 caracteres")
+    .required("La contraseña es obligatoria"),
+});
 
 const Login = () => {
-  const [password, setPassword] = useState("");
-  const [deshabilitarSubmit, setDeshabilitarSubmit] = useState(true);
-  const emailRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
-    const texto = e.target.value;
-    setPassword(texto);
-    setDeshabilitarSubmit(texto.length === 0);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const email = emailRef.current.value;
-
+  const onSubmit = async (values) => {
     try {
-      const respuesta = await loginApi(email, password);
+      dispatch(startLoading());
+      const respuesta = await loginApi(values.email, values.password);
       const tokenString = respuesta.token;
       localStorage.setItem("token", tokenString);
       const decoded = jwtDecode(tokenString);
       dispatch(loginRedux({ usuario: decoded, token: tokenString }));
       navigate("/");
     } catch (error) {
-      console.error(error);
+      alert(error.message || "Error en el login");
+    } finally {
+      dispatch(stopLoading());
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Email</label>
-      <input type="email" ref={emailRef} />
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="card" style={{ width: "350px" }}>
+        <div className="card-body">
+          <h4 className="card-title text-center mb-4">🎮 Videojuegos</h4>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validationSchema={loginSchema}
+            onSubmit={onSubmit}
+          >
+            {({ values }) => (
+              <Form>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <Field className="form-control" type="email" name="email" placeholder="Email" />
+                  <div className="text-danger small">
+                    <ErrorMessage name="email" />
+                  </div>
+                </div>
 
-      <label>Password</label>
-      <input type="password" value={password} onChange={handleChange} />
+                <div className="mb-3">
+                  <label className="form-label">Password</label>
+                  <Field className="form-control" type="password" name="password" placeholder="Password" />
+                  <div className="text-danger small">
+                    <ErrorMessage name="password" />
+                  </div>
+                </div>
 
-      <button type="submit" disabled={deshabilitarSubmit}>
-        Ingresar
-      </button>
-      <button type="button" onClick={() => navigate("/register")}>
-        Registrarse
-      </button>
-    </form>
+                <div className="d-grid gap-2">
+                  <button className="btn btn-dark" type="submit" disabled={!values.email || !values.password}>
+                    Ingresar
+                  </button>
+                  <button className="btn btn-outline-dark" type="button" onClick={() => navigate("/register")}>
+                    Registrarse
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -41,13 +41,19 @@ const Juego = ({ _id, id, titulo, descripcion, anioLanzamiento, imageUrl }) => {
   }
 
   return (
-    <div>
-      <button onClick={handleEliminar}>Eliminar</button>
-      <button onClick={() => setEditando(true)}>Editar</button>
-      <h3>{titulo}</h3>
-      <p>{descripcion}</p>
-      {anioLanzamiento && <p>Año: {anioLanzamiento}</p>}
-      {imageUrl && <img src={imageUrl} alt={titulo} style={{ width: "100px", borderRadius: "4px" }} />}
+    <div className="card mb-3">
+      <div className="card-body">
+        <div className="d-flex justify-content-between align-items-center">
+          <h5 className="card-title mb-0">{titulo}</h5>
+          <div>
+            <button className="btn btn-sm btn-outline-primary me-2" onClick={() => setEditando(true)}>Editar</button>
+            <button className="btn btn-sm btn-danger" onClick={handleEliminar}>Eliminar</button>
+          </div>
+        </div>
+        <p className="card-text mt-2">{descripcion}</p>
+        {anioLanzamiento && <small className="text-muted">Año: {anioLanzamiento}</small>}
+        {imageUrl && <img src={imageUrl} alt={titulo} className="img-fluid mt-2 rounded" style={{ maxWidth: "150px" }} />}
+      </div>
     </div>
   );
 };
