@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -19,9 +20,11 @@ const loginSchema = Yup.object({
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [errorLogin, setErrorLogin] = useState("");
 
   const onSubmit = async (values) => {
     try {
+      setErrorLogin("");
       dispatch(startLoading());
       const respuesta = await loginApi(values.email, values.password);
       const tokenString = respuesta.token;
@@ -30,7 +33,7 @@ const Login = () => {
       dispatch(loginRedux({ usuario: decoded, token: tokenString }));
       navigate("/");
     } catch (error) {
-      alert(error.message || "Error en el login");
+      setErrorLogin(error.message || "Error al iniciar sesión");
     } finally {
       dispatch(stopLoading());
     }
@@ -63,6 +66,12 @@ const Login = () => {
                     <ErrorMessage name="password" />
                   </div>
                 </div>
+
+                {errorLogin && (
+                  <div className="alert alert-danger py-2 mb-3">
+                    {errorLogin}
+                  </div>
+                )}
 
                 <div className="d-grid gap-2">
                   <button className="btn btn-dark" type="submit" disabled={!values.email || !values.password}>
