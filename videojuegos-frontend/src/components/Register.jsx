@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -23,9 +24,11 @@ const registerSchema = Yup.object({
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [errorRegister, setErrorRegister] = useState("");
 
   const onSubmit = async (values) => {
     try {
+      setErrorRegister("");
       dispatch(startLoading());
       await registrarUsuarioApi({
         username: values.username,
@@ -34,7 +37,7 @@ const Register = () => {
       });
       navigate("/login");
     } catch (error) {
-      alert(error.message || "Error al registrarse");
+      setErrorRegister(error.message || "Error al registrarse");
     } finally {
       dispatch(stopLoading());
     }
@@ -83,6 +86,12 @@ const Register = () => {
                     <ErrorMessage name="repetirPassword" />
                   </div>
                 </div>
+
+                {errorRegister && (
+                  <div className="alert alert-danger py-2 mb-3">
+                    {errorRegister}
+                  </div>
+                )}
 
                 <div className="d-grid gap-2">
                   <button className="btn btn-dark" type="submit" disabled={!values.username || !values.email || !values.password || !values.repetirPassword}>
