@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { cambiarPlanApi } from "../services/apiServices.js";
-import { actualizarPlanRedux } from "../redux/features/authSlice.js";
+import { loginRedux } from "../redux/features/authSlice.js";
+import { jwtDecode } from "jwt-decode";
 
 const CambiarPlan = () => {
   const dispatch = useDispatch();
@@ -10,8 +11,11 @@ const CambiarPlan = () => {
 
   const handleCambiarPlan = async () => {
     try {
-      await cambiarPlanApi();
-      dispatch(actualizarPlanRedux());
+      const respuesta = await cambiarPlanApi();
+      const tokenString = respuesta.token;
+      localStorage.setItem("token", tokenString);
+      const decoded = jwtDecode(tokenString);
+      dispatch(loginRedux({ usuario: decoded, token: tokenString }));
     } catch (error) {
       console.error(error);
     }
@@ -23,10 +27,10 @@ const CambiarPlan = () => {
         <h5 className="card-title">Plan actual: <span className="badge bg-dark">{usuario.plan}</span></h5>
         {usuario.plan === "plus" ? (
           <button className="btn btn-warning btn-sm" onClick={handleCambiarPlan}>
-            Mejorar a Premium ⭐
+            Mejorar a Premium
           </button>
         ) : (
-          <p className="text-success">Ya sos premium ✅</p>
+          <p className="text-success">Ya sos premium</p>
         )}
       </div>
     </div>
