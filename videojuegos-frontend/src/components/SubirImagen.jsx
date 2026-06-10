@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const SubirImagen = ({ onImageUploaded }) => {
+const SubirImagen = ({ onImageUploaded, imagen }) => {
     const VITE_CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_URL;
     const VITE_CLOUDINARY_CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
     const VITE_API_URL = import.meta.env.VITE_API_URL;
 
     const [imageUrl, setImageUrl] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!imagen) {
+            setImageUrl("");
+        }
+    }, [imagen]);
 
     const handleUpload = async (e) => {
         const file = e.target.files[0];
@@ -67,7 +73,7 @@ const SubirImagen = ({ onImageUploaded }) => {
             </label>
 
             {imageUrl && (
-                <img src={imageUrl} alt="Imagen subida" style={{ width: "100px", marginTop: "8px", borderRadius: "4px" }} />
+                <img src={imageUrl} alt="Imagen subida" style={{ width: "60px", marginLeft: "8px", borderRadius: "4px" }} />
             )}
         </div>
     );
