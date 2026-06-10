@@ -29,16 +29,20 @@ const Juego = ({ _id, id, titulo, descripcion, anioLanzamiento, imageUrl }) => {
   };
 
   if (editando) {
-    return (
-      <div>
-        <input value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })} />
-        <input value={form.descripcion} onChange={(e) => setForm({ ...form, descripcion: e.target.value })} />
-        <input type="number" value={form.anioLanzamiento} onChange={(e) => setForm({ ...form, anioLanzamiento: e.target.value })} />
-        <button onClick={handleGuardar}>Guardar</button>
-        <button onClick={() => setEditando(false)}>Cancelar</button>
+  return (
+    <div className="card mb-3">
+      <div className="card-body">
+        <div className="d-flex gap-2 flex-wrap">
+          <input className="form-control" style={{width: "150px"}} value={form.titulo} onChange={(e) => setForm({ ...form, titulo: e.target.value })} placeholder="Título" />
+          <input className="form-control" style={{width: "200px"}} value={form.descripcion} onChange={(e) => setForm({ ...form, descripcion: e.target.value })} placeholder="Descripción" />
+          <input className="form-control" style={{width: "100px"}} type="number" value={form.anioLanzamiento} onChange={(e) => setForm({ ...form, anioLanzamiento: e.target.value })} placeholder="Año" />
+          <button className="btn btn-success" onClick={handleGuardar}>Guardar</button>
+          <button className="btn btn-secondary" onClick={() => setEditando(false)}>Cancelar</button>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="card mb-3">

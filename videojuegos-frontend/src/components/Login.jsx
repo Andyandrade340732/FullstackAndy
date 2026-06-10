@@ -43,7 +43,7 @@ const Login = () => {
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="card" style={{ width: "350px" }}>
         <div className="card-body">
-          <h4 className="card-title text-center mb-4">🎮 Videojuegos</h4>
+          <h4 className="card-title text-center mb-4">Videojuegos</h4>
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={loginSchema}

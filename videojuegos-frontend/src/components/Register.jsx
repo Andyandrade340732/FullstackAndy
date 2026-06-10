@@ -5,6 +5,9 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { registrarUsuarioApi } from "../services/apiServices.js";
 import { startLoading, stopLoading } from "../redux/features/loadingSlice.js";
+import { loginApi } from "../services/apiServices.js";
+import { jwtDecode } from "jwt-decode";
+import { loginRedux } from "../redux/features/authSlice.js";
 
 const registerSchema = Yup.object({
   username: Yup.string()
@@ -35,19 +38,24 @@ const Register = () => {
         email: values.email,
         password: values.password,
       });
-      navigate("/login");
+      const respuesta = await loginApi(values.email, values.password);
+      const tokenString = respuesta.token;
+      localStorage.setItem("token", tokenString);
+      const decoded = jwtDecode(tokenString);
+      dispatch(loginRedux({ usuario: decoded, token: tokenString }));
+      navigate("/");
     } catch (error) {
       setErrorRegister(error.message || "Error al registrarse");
     } finally {
       dispatch(stopLoading());
     }
-  };
+};
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <div className="card" style={{ width: "350px" }}>
         <div className="card-body">
-          <h4 className="card-title text-center mb-4">🎮 Crear cuenta</h4>
+          <h4 className="card-title text-center mb-4">Crear cuenta</h4>
           <Formik
             initialValues={{ username: "", email: "", password: "", repetirPassword: "" }}
             validationSchema={registerSchema}

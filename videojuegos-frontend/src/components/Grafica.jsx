@@ -15,7 +15,6 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const Grafica = () => {
   const juegos = useSelector((state) => state.juegosSlice);
 
-  // Agrupa juegos por año de lanzamiento
   const datosPorAnio = juegos.reduce((acumulador, juego) => {
     const anio = juego.anioLanzamiento || "Sin año";
     if (acumulador[anio]) {

@@ -23,7 +23,6 @@ api.interceptors.response.use(
     }
 );
 
-// auth
 
 export const loginApi = async (email, password) => {
     const response = await api.post("/auth/login", { email, password });
@@ -35,7 +34,6 @@ export const registrarUsuarioApi = async (datos) => {
     return response.data;
 };
 
-// juegos
 
 export const obtenerJuegosApi = async () => {
     const response = await api.get("/juegos");
@@ -57,14 +55,14 @@ export const editarJuegoApi = async (id, datos) => {
     return response.data;
 };
 
-// categorioas
+
 
 export const obtenerCategoriasApi = async () => {
     const response = await api.get("/categorias");
     return response.data;
 };
 
-// usuario
+
 
 export const cambiarPlanApi = async () => {
     const response = await api.patch("/users/plan");
