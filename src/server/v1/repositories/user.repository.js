@@ -4,6 +4,9 @@ const userRepository = {
     findByEmail: async (email) => {
         return await User.findOne({ email });
     },
+    findByUsername: async (username) => {
+        return await User.findOne({ username });
+    },
     findById: async (id) => {
         return await User.findById(id);
     },
@@ -14,7 +17,7 @@ const userRepository = {
         return await User.findByIdAndUpdate(id, data, { new: true });
     },
     findAll: async (skip, limit) => {
-    return await User.find().skip(skip).limit(limit);
+        return await User.find().skip(skip).limit(limit);
     }
 }
 

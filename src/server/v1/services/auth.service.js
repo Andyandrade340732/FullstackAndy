@@ -3,13 +3,22 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 export const registrarUsuario = async (data) => {
-    const { email, password } = data;
-    const usuarioExiste = await userRepository.findByEmail(email);
-    if (usuarioExiste) {
+    const { email, username, password } = data;
+    
+    const emailExiste = await userRepository.findByEmail(email);
+    if (emailExiste) {
         const error = new Error("Ya existe un usuario con ese email");
         error.status = 400;
         throw error;
     }
+
+    const usernameExiste = await userRepository.findByUsername(username);
+    if (usernameExiste) {
+        const error = new Error("Ya existe un usuario con ese nombre de usuario");
+        error.status = 400;
+        throw error;
+    }
+
     const hash = await bcrypt.hash(password, 10);
     const usuarioCreado = await userRepository.create({
         ...data,
