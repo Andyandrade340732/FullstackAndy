@@ -3,10 +3,11 @@ import { obtenerJuegos, obtenerJuegoPorId, crearJuego, actualizarJuego, eliminar
 export const obtenerJuegosController = async (req, res, next) => {
     try {
         const { page, limit, titulo, categoriaId } = req.query;
+        const { user } = req;
         const filtros = {};
         if (titulo) filtros.titulo = { $regex: titulo, $options: "i" };
         if (categoriaId) filtros.categoriaId = categoriaId;
-        const juegos = await obtenerJuegos(filtros, page, limit);
+        const juegos = await obtenerJuegos(filtros, page, limit, user.userId);
         res.status(200).json({ juegos });
     } catch (error) {
         next(error);

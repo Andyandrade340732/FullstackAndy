@@ -1,9 +1,9 @@
 import gameRepository from "../repositories/game.repository.js";
 
-export const obtenerJuegos = async (filtros, page, limit) => {
+export const obtenerJuegos = async (filtros, page, limit, userId) => {
     const pagina = page || 1;
     const limite = limit || 10;
-    return await gameRepository.findAllPaginated(filtros, pagina, limite);
+    return await gameRepository.findAllPaginated({ ...filtros, creadoPor: userId }, pagina, limite);
 }
 
 export const obtenerJuegoPorId = async (id) => {
