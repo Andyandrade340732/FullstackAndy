@@ -26,7 +26,7 @@ const Juegos = () => {
               type="text"
               value={textoFiltro}
               onChange={(e) => setTextoFiltro(e.target.value)}
-              placeholder="Buscar por título..."
+              placeholder="Buscar por titulo..."
             />
           </div>
         </div>

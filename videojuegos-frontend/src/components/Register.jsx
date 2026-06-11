@@ -1,23 +1,20 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { registrarUsuarioApi } from "../services/apiServices.js";
+import { registrarUsuarioApi, loginApi } from "../services/apiServices.js";
 import { startLoading, stopLoading } from "../redux/features/loadingSlice.js";
-import { loginApi } from "../services/apiServices.js";
 import { jwtDecode } from "jwt-decode";
 import { loginRedux } from "../redux/features/authSlice.js";
+import { toast } from "react-toastify";
 
 const registerSchema = Yup.object({
   username: Yup.string()
-    .min(3, "El usuario debe tener al menos 3 caracteres")
     .required("El usuario es obligatorio"),
   email: Yup.string()
     .email("El email no es válido")
     .required("El email es obligatorio"),
   password: Yup.string()
-    .min(3, "La contraseña debe tener al menos 3 caracteres")
     .required("La contraseña es obligatoria"),
   repetirPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Las contraseñas no coinciden")
@@ -27,11 +24,9 @@ const registerSchema = Yup.object({
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [errorRegister, setErrorRegister] = useState("");
 
   const onSubmit = async (values) => {
     try {
-      setErrorRegister("");
       dispatch(startLoading());
       await registrarUsuarioApi({
         username: values.username,
@@ -45,11 +40,11 @@ const Register = () => {
       dispatch(loginRedux({ usuario: decoded, token: tokenString }));
       navigate("/");
     } catch (error) {
-      setErrorRegister(error.message || "Error al registrarse");
+      toast.error(error.message || "Error al registrarse");
     } finally {
       dispatch(stopLoading());
     }
-};
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
@@ -94,12 +89,6 @@ const Register = () => {
                     <ErrorMessage name="repetirPassword" />
                   </div>
                 </div>
-
-                {errorRegister && (
-                  <div className="alert alert-danger py-2 mb-3">
-                    {errorRegister}
-                  </div>
-                )}
 
                 <div className="d-grid gap-2">
                   <button className="btn btn-dark" type="submit" disabled={!values.username || !values.email || !values.password || !values.repetirPassword}>

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -7,24 +6,22 @@ import { loginApi } from "../services/apiServices.js";
 import { jwtDecode } from "jwt-decode";
 import { loginRedux } from "../redux/features/authSlice.js";
 import { startLoading, stopLoading } from "../redux/features/loadingSlice.js";
+import { toast } from "react-toastify";
 
 const loginSchema = Yup.object({
   email: Yup.string()
     .email("El email no es válido")
     .required("El email es obligatorio"),
   password: Yup.string()
-    .min(3, "La contraseña debe tener al menos 3 caracteres")
     .required("La contraseña es obligatoria"),
 });
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [errorLogin, setErrorLogin] = useState("");
 
   const onSubmit = async (values) => {
     try {
-      setErrorLogin("");
       dispatch(startLoading());
       const respuesta = await loginApi(values.email, values.password);
       const tokenString = respuesta.token;
@@ -33,7 +30,7 @@ const Login = () => {
       dispatch(loginRedux({ usuario: decoded, token: tokenString }));
       navigate("/");
     } catch (error) {
-      setErrorLogin(error.message || "Error al iniciar sesión");
+      toast.error(error.message || "Error al iniciar sesión");
     } finally {
       dispatch(stopLoading());
     }
@@ -66,12 +63,6 @@ const Login = () => {
                     <ErrorMessage name="password" />
                   </div>
                 </div>
-
-                {errorLogin && (
-                  <div className="alert alert-danger py-2 mb-3">
-                    {errorLogin}
-                  </div>
-                )}
 
                 <div className="d-grid gap-2">
                   <button className="btn btn-dark" type="submit" disabled={!values.email || !values.password}>
